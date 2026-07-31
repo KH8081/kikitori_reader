@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#17324d" />
+  <meta name="description" content="PDF・Word・EPUB・テキストを日本語と英語で読み上げる個人用PWA" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Kikitori Reader</title>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">PRIVATE READER</p>
+      <h1>Kikitori Reader</h1>
+    </div>
+    <button id="installButton" class="ghost" hidden>ホーム画面に追加</button>
+  </header>
+
+  <main class="layout">
+    <section class="panel library-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">LIBRARY</p>
+          <h2>書類を追加</h2>
+        </div>
+      </div>
+
+      <label class="dropzone" id="dropzone">
+        <input id="fileInput" type="file" accept=".pdf,.docx,.txt,.md,.epub" multiple />
+        <span class="drop-icon">＋</span>
+        <strong>ファイルを選択</strong>
+        <small>PDF / Word / EPUB / TXT / Markdown</small>
+      </label>
+
+      <details class="paste-box">
+        <summary>文章を直接貼り付ける</summary>
+        <input id="pasteTitle" type="text" placeholder="タイトル" />
+        <textarea id="pasteText" rows="7" placeholder="日本語または英語の文章を貼り付けてください"></textarea>
+        <button id="addPasteButton" class="primary">ライブラリに追加</button>
+      </details>
+
+      <div class="library-search"><input id="librarySearch" type="search" placeholder="本棚を検索" aria-label="本棚を検索"></div>
+
+      <div class="library-actions">
+        <span id="libraryCount">0冊</span>
+        <button id="clearLibraryButton" class="text-button">すべて削除</button>
+      </div>
+      <div id="libraryList" class="library-list"></div>
+    </section>
+
+    <section class="panel reader-panel">
+      <div id="emptyState" class="empty-state">
+        <div class="empty-mark">Aa</div>
+        <h2>聴きたい書類を追加してください</h2>
+        <p>文字データはこの端末のブラウザー内に保存されます。</p>
+      </div>
+
+      <div id="reader" hidden>
+        <div class="reader-header">
+          <div>
+            <p id="documentMeta" class="eyebrow"></p>
+            <h2 id="documentTitle"></h2>
+          </div>
+          <button id="deleteDocumentButton" class="ghost danger">削除</button>
+        </div>
+
+        <div class="progress-block">
+          <div class="progress-row">
+            <span id="positionLabel">0 / 0</span>
+            <span id="percentLabel">0%</span>
+          </div>
+          <input id="progressSlider" type="range" min="0" max="0" value="0" />
+        </div>
+
+        <div class="now-reading" id="nowReading">再生位置を選択してください</div>
+
+        <div class="transport" aria-label="再生操作">
+          <button id="prevButton" class="round small" title="前の段落">−15</button>
+          <button id="playButton" class="round play" title="再生">▶</button>
+          <button id="nextButton" class="round small" title="次の段落">＋15</button>
+        </div>
+
+        <div class="settings-grid">
+          <label>
+            <span>速度 <output id="rateOutput">1.0×</output></span>
+            <input id="rateSlider" type="range" min="0.6" max="2" step="0.1" value="1" />
+          </label>
+          <label>
+            <span>声</span>
+            <select id="voiceSelect"><option value="">端末の標準音声</option></select>
+          </label>
+          <label>
+            <span>言語</span>
+            <select id="languageMode">
+              <option value="auto">自動判定</option>
+              <option value="ja-JP">日本語</option>
+              <option value="en-US">英語</option>
+            </select>
+          </label>
+          <label>
+            <span>スリープ</span>
+            <select id="sleepTimer">
+              <option value="0">使用しない</option>
+              <option value="10">10分</option>
+              <option value="20">20分</option>
+              <option value="30">30分</option>
+              <option value="60">60分</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="text-toolbar">
+          <button id="fontDown" class="ghost">文字を小さく</button>
+          <button id="fontUp" class="ghost">文字を大きく</button>
+          <button id="copyText" class="ghost">全文コピー</button>
+        </div>
+
+        <article id="documentText" class="document-text" tabindex="0"></article>
+      </div>
+    </section>
+  </main>
+
+  <div id="fixedPlayer" class="fixed-player" aria-label="固定再生操作" hidden>
+    <div class="fixed-player-info">
+      <span id="fixedPlayerTitle" class="fixed-player-title">書類名</span>
+      <span id="fixedPlayerStatus" class="fixed-player-status">停止中</span>
+    </div>
+    <div class="fixed-player-buttons">
+      <button id="fixedPrevButton" class="fixed-icon" type="button" aria-label="前の段落">−15</button>
+      <button id="fixedPlayButton" class="fixed-control fixed-play" type="button" aria-label="再生">▶ <span>再生</span></button>
+      <button id="fixedPauseButton" class="fixed-control fixed-pause" type="button" aria-label="一時停止">Ⅱ <span>一時停止</span></button>
+      <button id="fixedNextButton" class="fixed-icon" type="button" aria-label="次の段落">＋15</button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" aria-label="画面切替">
+    <button id="showLibraryButton" class="mobile-nav-button active" type="button">本棚</button>
+    <button id="showReaderButton" class="mobile-nav-button" type="button">読む</button>
+  </nav>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs" type="module"></script>
+  <script src="https://unpkg.com/mammoth@1.9.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

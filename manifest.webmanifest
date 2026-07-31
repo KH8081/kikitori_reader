@@ -1,0 +1,14 @@
+{
+  "name": "Kikitori Reader",
+  "short_name": "Kikitori",
+  "description": "PDF・Word・EPUB・テキストを日本語と英語で読み上げる個人用アプリ",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f0e8",
+  "theme_color": "#17324d",
+  "lang": "ja",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
