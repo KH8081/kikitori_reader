@@ -256,6 +256,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   font-size: 1rem;
 }
 .auth-label input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.auth-label input, .auth-label input::placeholder { color: var(--ink); }
+.auth-label input { background: #fff !important; color: var(--ink) !important; -webkit-text-fill-color: var(--ink); }
+.auth-label input::placeholder { color: #94a3b8; -webkit-text-fill-color: #94a3b8; }
 .auth-submit { width: 100%; padding: 14px; margin-top: 4px; font-size: 1.02rem; }
 .auth-toggle, .auth-reset {
   display: block;
