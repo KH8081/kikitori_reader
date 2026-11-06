@@ -198,3 +198,83 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 @media (prefers-color-scheme: dark) {
   .library-search input { background: #111d26; }
 }
+
+/* ============================================================
+   同期・ログイン関連 (Firebase対応で追加)
+   ============================================================ */
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.sync-status {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.16);
+  color: #fff;
+  white-space: nowrap;
+}
+.sync-status.synced  { background: rgba(97, 170, 120, .95); }
+.sync-status.syncing { background: rgba(196, 107, 59, .95); }
+.sync-status.offline { background: rgba(163, 58, 58, .9); }
+.sync-status.local   { background: rgba(255,255,255,.2); }
+
+.auth-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(circle at top left, #fffaf1, var(--paper) 45%, #e8edf1 100%);
+  overflow: auto;
+}
+.auth-card {
+  width: min(420px, 100%);
+  background: var(--panel);
+  border: 1px solid rgba(217,210,197,.9);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: clamp(26px, 5vw, 40px);
+}
+.auth-lead { color: var(--muted); font-size: .92rem; line-height: 1.7; margin-bottom: 20px; }
+.auth-label {
+  display: block;
+  margin-bottom: 16px;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--brand);
+}
+.auth-label input {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #fff;
+  font-size: 1rem;
+}
+.auth-label input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.auth-submit { width: 100%; padding: 14px; margin-top: 4px; font-size: 1.02rem; }
+.auth-toggle, .auth-reset {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  text-align: center;
+  color: var(--accent);
+}
+.auth-reset { margin-top: 10px; color: var(--muted); font-size: .84rem; }
+.auth-error {
+  margin-bottom: 16px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: rgba(163, 58, 58, .1);
+  border: 1px solid rgba(163, 58, 58, .3);
+  color: var(--danger);
+  font-size: .88rem;
+  line-height: 1.6;
+}
+body.auth-locked main.layout,
+body.auth-locked .fixed-player,
+body.auth-locked .mobile-nav { display: none !important; }

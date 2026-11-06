@@ -17,8 +17,31 @@
       <p class="eyebrow">PRIVATE READER</p>
       <h1>Kikitori Reader</h1>
     </div>
-    <button id="installButton" class="ghost" hidden>ホーム画面に追加</button>
+    <div class="topbar-right">
+      <span id="syncStatus" class="sync-status" hidden></span>
+      <button id="installButton" class="ghost" hidden>ホーム画面に追加</button>
+      <button id="logoutButton" class="ghost" hidden>ログアウト</button>
+    </div>
   </header>
+
+  <!-- ログイン画面（Firebase設定済みのときだけ表示） -->
+  <div id="authGate" class="auth-gate" hidden>
+    <div class="auth-card">
+      <p class="eyebrow">ACCOUNT</p>
+      <h2 id="authTitle">ログイン</h2>
+      <p class="auth-lead">ログインすると、どの端末からでも同じ本棚・読書位置・設定にアクセスできます。</p>
+      <div id="authError" class="auth-error" hidden></div>
+      <label class="auth-label">メールアドレス
+        <input id="authEmail" type="email" autocomplete="username" placeholder="you@example.com" />
+      </label>
+      <label class="auth-label">パスワード
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="6文字以上" />
+      </label>
+      <button id="authSubmit" class="primary auth-submit">ログイン</button>
+      <button id="authToggle" class="text-button auth-toggle">アカウントをお持ちでない方はこちら（新規登録）</button>
+      <button id="authReset" class="text-button auth-reset">パスワードを忘れた場合</button>
+    </div>
+  </div>
 
   <main class="layout">
     <section class="panel library-panel">
@@ -56,7 +79,7 @@
       <div id="emptyState" class="empty-state">
         <div class="empty-mark">Aa</div>
         <h2>聴きたい書類を追加してください</h2>
-        <p>文字データはこの端末のブラウザー内に保存されます。</p>
+        <p id="emptyStateNote">文字データが保存されます。</p>
       </div>
 
       <div id="reader" hidden>
@@ -147,6 +170,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs" type="module"></script>
   <script src="https://unpkg.com/mammoth@1.9.0/mammoth.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="app.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js" type="module"></script>
 </body>
 </html>
